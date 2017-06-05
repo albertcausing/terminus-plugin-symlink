@@ -1,0 +1,14 @@
+{
+    "name": "albertcausing/terminus-plugin-symlink",
+    "description": "Terminus plugin to create symlink",
+    "type": "terminus-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": { "Pantheon\\TerminusSymlink\\": "src" }
+    },
+    "extra": {
+        "terminus": {
+            "compatible-version": "1.*"
+        }
+    }
+}
