@@ -14,7 +14,7 @@ These commands require no configuration
 * `terminus remote:symlink <site>.<env> <directory_to_symlink> --transfer_existing --destination=<custom_target_directory_name>`
 
 symlink is an alias of remote:symlink
-* `terminus symlink <site>.<env> <directory_to_symlink`
+* `terminus symlink <site>.<env> <directory_to_symlink>`
 
 ## Installation
 To install this plugin place it in `~/.terminus/plugins/`.
