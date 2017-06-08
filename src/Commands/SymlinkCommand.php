@@ -24,8 +24,8 @@ class SymlinkCommand extends TerminusCommand implements SiteAwareInterface
 	protected $info;
 	protected $tmpDirs = [];
 	/**
-        * Object constructor
-        **/
+	 * Object constructor
+	 **/
 	public function __construct()
 	{
 		parent::__construct();
@@ -45,7 +45,7 @@ class SymlinkCommand extends TerminusCommand implements SiteAwareInterface
 	 *
 	 * @usage <site>.<env> <src> --destination=<customTargetName> An optional target directory name
 	 * @usage <site>.<env> <src> --transfer_existing Transfer existing source directory to files/symlink_target/.
-	 * @usage <site>.<env> <src> --pointtofile 
+	 * @usage <site>.<env> <src> --pointtofile
 	 */
 	public function symlinkCommand($site_env, $src, array $options = ['destination'=> null])
 	{
@@ -78,27 +78,27 @@ class SymlinkCommand extends TerminusCommand implements SiteAwareInterface
 		 * Check if it's a file, symlink, or directory
 		 **/
 		$type = $this->check_node("~/.pantheon_symlink/".$LOCAL_TARGET);
-		
+
 		/**
 		 * Removing directory/file if exist, will replace with symlink
 		 **/
 		$this->log()->notice("Removing existing files/directory");
-		
+
 		switch($type) {
-			case 'file':
-			case 'symlink':
-				$delete_code = "rsync -a".$verbose."z --remove-source-files $connection:$SRC ~/.pantheon_symlink/".$LOCAL_TARGET . $devnull;
-				$delete_file = "rsync -a".$verbose."z --remove-source-files $connection:files/symlink_target/$DEST ~/.pantheon_symlink/".$LOCAL_TARGET . $devnull;				
+		case 'file':
+		case 'symlink':
+			$delete_code = "rsync -a".$verbose."z --remove-source-files $connection:$SRC ~/.pantheon_symlink/".$LOCAL_TARGET . $devnull;
+			$delete_file = "rsync -a".$verbose."z --remove-source-files $connection:files/symlink_target/$DEST ~/.pantheon_symlink/".$LOCAL_TARGET . $devnull;
 			break;
-			
-			default:
-			   	$delete_code = "$del_rsync $connection:" . str_replace($LOCAL_TARGET,'',$SRC) . $devnull;
-			   	$delete_file = "$del_rsync $connection:files/symlink_target/" . $DEST . $devnull;
+
+		default:
+			$delete_code = "$del_rsync $connection:" . str_replace($LOCAL_TARGET,'',$SRC) . $devnull;
+			$delete_file = "$del_rsync $connection:files/symlink_target/" . $DEST . $devnull;
 			break;
 		}
 		passthru($delete_code); //removing copies from code/
 		passthru($delete_file); //removing copies from files/
-		
+
 		/**
 		 * Transfering downloaded copy to files/symlink_target/
 		 **/
@@ -107,11 +107,11 @@ class SymlinkCommand extends TerminusCommand implements SiteAwareInterface
 			$transfer_directory = "$updown_rsync ~/.pantheon_symlink/$LOCAL_TARGET --temp-dir=~/tmp/ $connection:files/symlink_target/" . $devnull;
 		} else {
 			//or create the symlink target empty directory or file
-			if($config['pointtofile']) {
-				passthru("mkdir -p ~/.pantheon_symlink/empty");			
+			if($options['pointtofile']) {
+				passthru("mkdir -p ~/.pantheon_symlink/empty");
 				passthru("touch ~/.pantheon_symlink/empty/$DEST");
 			} else {
-				passthru("mkdir -p ~/.pantheon_symlink/empty/$DEST");				
+				passthru("mkdir -p ~/.pantheon_symlink/empty/$DEST");
 			}
 			$transfer_directory = "$updown_rsync ~/.pantheon_symlink/empty/$DEST --temp-dir=~/tmp/ $connection:files/symlink_target/" . $devnull;
 		}
@@ -206,16 +206,16 @@ class SymlinkCommand extends TerminusCommand implements SiteAwareInterface
 			throw new TerminusException('Command `{command}` failed with exit code {status}', ['command' => $command, 'status' => $result]);
 		}
 	}
-	
+
 	protected function check_node($node) {
-		if(is_link ( $node)) {
-		  return "symlink";
+		if(is_link( $node)) {
+			return "symlink";
 		} else {
-		  if(is_dir($node)) {
-		     return "dir";
-		  } else {
-		     return "file";
-		  }
+			if(is_dir($node)) {
+				return "dir";
+			} else {
+				return "file";
+			}
 		}
-	}	
+	}
 }

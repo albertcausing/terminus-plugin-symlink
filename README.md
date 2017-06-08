@@ -11,6 +11,7 @@ These commands require no configuration
 ## Usage
 * `terminus remote:symlink <site>.<env> <directory_to_symlink>`
 * `terminus remote:symlink <site>.<env> <directory_to_symlink> --transfer_existing `
+* `terminus remote:symlink <site>.<env> <directory_to_symlink> --pointstofile`
 * `terminus remote:symlink <site>.<env> <directory_to_symlink> --transfer_existing --destination=<custom_target_directory_name>`
 
 symlink is an alias of remote:symlink
